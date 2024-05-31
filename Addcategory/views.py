@@ -1,3 +1,7 @@
 from django.shortcuts import render
+from .models import AddCategory
 
-# Create your views here.
+def category_list(request):
+    categories = AddCategory.objects.all()
+    return render(request, 'Addcategory/category_list.html', {'categories': categories})
+

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<head>
+
+    <title>Product List</title>
+</head>
+<body>
+    <h1>Product List</h1>
+    <ul>
+        {% for product in products %}
+            <li>{{ product.name }}</li>
+            <li>Category: {{ product.Category }}</li>
+            <li>Description: {{ product.description }}</li>
+            <li>Expiry Date: {{ product.expiry_date }}</li>
+            <hr>
+        {% endfor %}
+    </ul>
+</body>
+</html>

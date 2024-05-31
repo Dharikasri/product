@@ -1,3 +1,6 @@
 from django.shortcuts import render
+from .models import AddProduct
 
-# Create your views here.
+def product_list(request):
+    products = AddProduct.objects.all()
+    return render(request, 'Addproduct/product_list.html', {'products': products})
