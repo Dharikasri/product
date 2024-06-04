@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from rest_framework import viewsets
-
+from django.contrib import messages
 from .models import Customer
 from .forms import CustomerForm
 from .serializers import CustomerSerializer
@@ -46,6 +46,14 @@ class CustomerListAPIView(viewsets.ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
 
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -53,10 +61,16 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('/products1/') 
+            return redirect('/dashboard/')
         else:
-            return render(request, 'registration/login.html', {'error_message': 'Invalid username or password'})
-    return render(request, 'registration/login.html')
+            messages.error(request, 'Invalid username or password. Please try again.')
+            return render(request, 'Registration/login.html') 
+    return render(request, 'Registration/login.html')
+
+@login_required
+def dashboard_view(request):
+    return render(request, 'Registration/dashboard.html')
+ 
 
 def product_list(request):
     return render(request, 'Addproduct/product_list.html')

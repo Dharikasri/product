@@ -7,7 +7,7 @@ router = DefaultRouter()
 router.register(r'categories', AddCategoryViewSet)
 
 urlpatterns = [
+    path('api1/', include(router.urls)),
     path('category/list/', views.category_list, name='category_list'),
     path('category/create/', views.create_category, name='create_category'),
-    path('api1/', include(router.urls)),
 ]

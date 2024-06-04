@@ -26,6 +26,7 @@ urlpatterns = [
     path('', include('Addproduct.urls')),  
     path('', include('CustomerID.urls')),
     path('CustomerID/', include('CustomerID.urls', namespace='CustomerID')),
+     path('api1/', include('Addcategory.urls')),
 ]
 
 

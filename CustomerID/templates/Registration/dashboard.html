@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Store</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #F5F5DC;
+      text-align:center;
+    }
+
+    .navbar {
+      background-color: #00ffff;
+      color: #fff;
+      padding: 10px 20px;
+    }
+
+    .navbar ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar ul li {
+      display: inline;
+      margin-right: 40px;
+      font-weight: bold;
+      text-decoration: none;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .container {
+      margin: 20px auto;
+      max-width: 1200px;
+      padding: 0 20px;
+    }
+
+    /* Example styling for product categories */
+    .categories {
+      display: none; /* Initially hide categories */
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-gap: 20px;
+    }
+
+    .category {
+      border: 1px solid #ccc;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* Example styling for orders */
+    .orders {
+      margin-top: 40px;
+    }
+
+    .order {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+    <body>
+        <div class="store-title">
+          <h1>My Store</h1>
+        </div>
+  <div class="navbar">
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="{% url 'product_list' %}">Products</a></li> 
+      <li><a href="#">Orders</a></li>
+      <li><a href="#">Account</a></li>
+      <li><a href="#">Logout</a></li>
+    </ul>
+  </div>
