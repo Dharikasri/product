@@ -8,6 +8,7 @@ class AddOrder(models.Model):
     order_date = models.DateField()
     CustomerID = models.ForeignKey(Customer, on_delete=models.CASCADE)
     expiry_date = models.DateField(null=True, blank=True)
+    quantity = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
         return self.order_no
