@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from rest_framework import viewsets
 from django.contrib import messages
 from .models import Customer
@@ -49,9 +49,6 @@ class CustomerListAPIView(viewsets.ModelViewSet):
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
 def login_view(request):
@@ -74,3 +71,21 @@ def dashboard_view(request):
 
 def product_list(request):
     return render(request, 'Addproduct/product_list.html')
+
+
+def order_list(request):
+     return render(request, 'Addorder/order_list.html')
+ 
+def logout_view(request):
+    logout(request)
+    return redirect('CustomerID:login_view')
+
+@login_required
+def dashboard(request):
+    return render(request, 'Registration/dashboard.html')
+
+from django.contrib.auth.models import User
+
+def accounts_view(request):
+    users = User.objects.all()
+    return render(request, 'Registration/accounts.html', {'users': users})

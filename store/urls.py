@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from CustomerID.views import login_view   
-from django.shortcuts import redirect
 urlpatterns = [
     path('', login_view, name='root'),
     path('admin/', admin.site.urls),

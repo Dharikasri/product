@@ -74,8 +74,9 @@
     <ul>
       <li><a href="#">Home</a></li>
       <li><a href="{% url 'product_list' %}">Products</a></li> 
-      <li><a href="#">Orders</a></li>
-      <li><a href="#">Account</a></li>
-      <li><a href="#">Logout</a></li>
+      <li><a href="{% url 'order_list' %}">Orders</a></li>
+      <li><a href="{% url 'CustomerID:accounts' %}">Account</a></li>
+      <li><a href="{% url 'CustomerID:logout' %}">Logout</a></li>
     </ul>
   </div>
+  
