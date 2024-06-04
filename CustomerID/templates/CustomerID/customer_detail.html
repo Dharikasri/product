@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Detail</title>
+</head>
+<body>
+    <h1>Customer Detail</h1>
+    <p><strong>Name:</strong> {{ customer.name }}</p>
+    <p><strong>Address:</strong> {{ customer.address }}</p>
+    <p><strong>Mobile:</strong> {{ customer.mobile }}</p>
+    <p><strong>Created At:</strong> {{ customer.created_at }}</p>
+
+    <a href="{% url 'CustomerID:customer_list' %}">Back to Customer List</a>
+
+</body>
+</html>

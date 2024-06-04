@@ -15,11 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-
+from CustomerID.views import login_view   
+from django.shortcuts import redirect
 urlpatterns = [
+    path('', login_view, name='root'),
     path('admin/', admin.site.urls),
-    path('api2/', include('Addorder.urls')),
-    path('ap1/', include('Addcategory.urls')),
-    path('api3/', include('Addproduct.urls')),
-    path('api4/', include('CustomerID.urls')),
-     ]
+    path('', include('Addorder.urls')),
+    path('Cate/', include('Addcategory.urls')),
+    path('addproduct/', include('Addproduct.urls')),
+    path('login/', login_view, name='login'), 
+    path('', include('Addproduct.urls')),  
+    path('', include('CustomerID.urls')),
+    path('CustomerID/', include('CustomerID.urls', namespace='CustomerID')),
+]
+
+
