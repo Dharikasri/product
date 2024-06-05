@@ -4,7 +4,7 @@ from .models import AddOrder
 class AddOrderForm(forms.ModelForm):
     class Meta:
         model = AddOrder
-        fields = ['product', 'order_no', 'order_date', 'CustomerID', 'expiry_date', 'quantity']
+        fields = ['product', 'order_no', 'order_date', 'CustomerID', 'quantity']
         widgets = {
             'order_date': forms.DateInput(attrs={'type': 'date'}),
             'expiry_date': forms.DateInput(attrs={'type': 'date'}),

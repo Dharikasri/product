@@ -10,7 +10,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from Addcategory.models import AddCategory 
 from Addproduct.models import AddProduct
 from Addorder.models import AddOrder
-
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 # Views for managing customers
@@ -75,28 +76,31 @@ def login_view(request):
     return render(request, 'Registration/login.html', {'form': form})
 
 
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 @login_required
 def dashboard_view(request):
     categories = AddCategory.objects.all()
     products = AddProduct.objects.all()
 
     if request.method == 'POST':
-        category_id = request.POST.get('category_id')
         product_id = request.POST.get('product_id')
         quantity = request.POST.get('quantity')
 
-        if category_id is None or product_id is None:
-            messages.error(request, 'Please select both a category and a product.')
+        if product_id is None:
+            messages.error(request, 'Please select a product.')
             return redirect('/dashboard/')
-
-        print(f'Product ID: {product_id}, Quantity: {quantity}')
-        print(f'Selected Category ID: {category_id}')
-        print(f'Selected Product ID: {product_id}')
-
         
-        return redirect('/add/')  # Replace 'add_order' with the actual URL name of the add_order page
+        # Retrieve product details based on the product ID
+        product = AddProduct.objects.get(pk=product_id)
+
+        # Redirect to the add_order page with product details
+        return HttpResponseRedirect(reverse('/add/') + f'?product_id={product_id}&quantity={quantity}')
+
     else:
         return render(request, 'Registration/dashboard.html', {'categories': categories, 'products': products})
+
 
 
 
@@ -132,3 +136,8 @@ def purchase_product(request):
         return HttpResponse('Purchase successful!')
     else:
         return HttpResponse('Method not allowed')
+
+def add_order(request):
+    product_id = request.GET.get('product_id')
+    quantity = request.GET.get('quantity')
+    return render(request, 'Addorder/add_order.html', {'product_id': product_id, 'quantity': quantity})

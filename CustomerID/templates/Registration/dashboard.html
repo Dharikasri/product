@@ -93,6 +93,7 @@
         <h3>{{ product.name }}</h3>
         <p>{{ product.description }}</p>
         <p>Price: ${{ product.price }}</p>
+        <!-- Form for adding order -->
         <form method="post" action="{% url 'add_order' %}">
           {% csrf_token %}
           <input type="hidden" name="product_id" value="{{ product.id }}">
