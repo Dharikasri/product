@@ -19,3 +19,16 @@ class AddOrderViewSet(viewsets.ModelViewSet):
 def order_list(request):
     orders = AddOrder.objects.all()
     return render(request, 'Addorder/order_list.html', {'orders': orders})
+
+from django.shortcuts import render, redirect
+from .forms import AddOrderForm
+
+def add_order_view(request):
+    if request.method == 'POST':
+        form = AddOrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('order_list')
+    else:
+        form = AddOrderForm()
+    return render(request, 'Addorder/add_order.html', {'form': form})

@@ -2,6 +2,9 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from CustomerID.views import CustomerListAPIView, login_view,product_list,logout_view
 from CustomerID.views import order_list,accounts_view
+from CustomerID.views import homepage_view
+from Addorder.views import add_order_view
+
 
 from . import views
 
@@ -22,6 +25,12 @@ urlpatterns = [
     path('customers/<int:pk>/delete/', views.customer_delete, name='customer_delete'), 
     path('api/', include(router.urls)), 
     path('accounts/', accounts_view, name='accounts'),
+    path('home/',homepage_view, name='homepage'),
+    path('prod/',views.add_product, name='add_product'),
+    path('purchase/', views.purchase_product, name='purchase_product'),
+    path('add/', add_order_view, name='add_order'),
+    
+    
 
 ]
 

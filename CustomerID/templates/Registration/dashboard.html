@@ -9,8 +9,7 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #F5F5DC;
-      text-align:center;
+      text-align: center;
     }
 
     .navbar {
@@ -41,42 +40,75 @@
     }
 
     /* Example styling for product categories */
-    .categories {
-      display: none; /* Initially hide categories */
+    .category-dropdown {
+      margin: 20px 0;
+    }
+
+    /* Example styling for products */
+    .products {
+      display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       grid-gap: 20px;
     }
 
-    .category {
+    .product {
       border: 1px solid #ccc;
       padding: 20px;
       text-align: center;
     }
-
-    /* Example styling for orders */
-    .orders {
-      margin-top: 40px;
-    }
-
-    .order {
-      border: 1px solid #ccc;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
   </style>
 </head>
 <body>
-    <body>
-        <div class="store-title">
-          <h1>My Store</h1>
-        </div>
+  <div class="store-title">
+    <h1>My Store</h1>
+  </div>
   <div class="navbar">
     <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="{% url 'product_list' %}">Products</a></li> 
+      <li><a href="{% url 'CustomerID:homepage'%}">Home</a></li>
       <li><a href="{% url 'order_list' %}">Orders</a></li>
       <li><a href="{% url 'CustomerID:accounts' %}">Account</a></li>
       <li><a href="{% url 'CustomerID:logout' %}">Logout</a></li>
     </ul>
   </div>
-  
+
+  <!-- Categories -->
+  <div class="container">
+    <h2>Categories</h2>
+    <div class="category-dropdown">
+      <label for="categories">Select a category:</label>
+      <select id="categories" name="categories">
+        {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <!-- Products -->
+  <div class="container">
+    <h2>Products</h2>
+    <div class="products">
+      {% for product in products %}
+      <div class="product">
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.description }}</p>
+        <p>Price: ${{ product.price }}</p>
+        <form method="post" action="{% url 'add_order' %}">
+          {% csrf_token %}
+          <input type="hidden" name="product_id" value="{{ product.id }}">
+          <label for="quantity{{ product.id }}">Quantity:</label>
+          <select id="quantity{{ product.id }}" name="quantity">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+          <button type="submit">Buy</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

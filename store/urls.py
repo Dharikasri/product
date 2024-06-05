@@ -24,7 +24,7 @@ urlpatterns = [
     path('addproduct/', include('Addproduct.urls')), 
     path('', include('Addproduct.urls')),  
     path('', include('CustomerID.urls')),
-    path('CustomerID/', include('CustomerID.urls', namespace='CustomerID')),
+    path('CustomerID/', include('CustomerID.urls', namespace='CustomerID_app')),
      path('api1/', include('Addcategory.urls')),
 ]
 
