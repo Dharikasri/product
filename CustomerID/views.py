@@ -103,19 +103,35 @@ def accounts_view(request):
 def homepage_view(request):
     return render(request, 'Registration/Homepage.html')
 
-
 @login_required
 def add_order_view(request):
+    user = request.user
+    customer_id = None
+
+    if user.is_authenticated:
+        try:
+            customer_id = user.customer.id
+        except Customer.DoesNotExist:
+            pass
+
     if request.method == 'POST':
         form = AddOrderForm(request.POST)
         if form.is_valid():
-            form.save()
+            order = form.save(commit=False)
+            order.CustomerID = customer_id  # Assign the customer ID to the order if available
+            order.order_date = timezone.now()  # Set the order date to the current time
+            order.save()
             return redirect('order_list')
     else:
         product_name = request.GET.get('product_name', None)
+        initial_data = {'product_name': product_name}
+        if customer_id:
+            initial_data['CustomerID'] = customer_id
+        form = AddOrderForm(initial=initial_data)
+
     return render(request, 'Addorder/add_order.html', {'form': form})
 
 @login_required
 def order_list(request):
-    orders = AddOrder.objects.all()
+    orders = AddOrder.objects.filter(CustomerID=request.user.customer.id)
     return render(request, 'Addorder/order_list.html', {'orders': orders})
