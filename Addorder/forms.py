@@ -5,7 +5,7 @@ from datetime import datetime
 class AddOrderForm(forms.ModelForm):
     class Meta:
         model = AddOrder
-        fields = ['order_no', 'order_date', 'CustomerID', 'quantity', 'product']
+        fields = ['order_no', 'order_date', 'CustomerID', 'quantity']
         widgets = {
             'order_date': forms.DateInput(attrs={'type': 'date'}),
         }

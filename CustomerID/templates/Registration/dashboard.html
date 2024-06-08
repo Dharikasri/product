@@ -125,7 +125,7 @@
         <p>{{ product.description }}</p>
         <p>Price: ${{ product.price }}</p>
         {% if product.id %}
-        <form method="post" action="{% url 'add_order'product.id %}"> 
+        <form method="post" action="{% url 'add_order'%}?product_name={{ product.name }}">  
           {% csrf_token %}
           <input type="hidden" name="product_id" value="{{ product.id }}">
           <label for="quantity{{ product.id }}">Quantity:</label>

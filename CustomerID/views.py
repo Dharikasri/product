@@ -105,25 +105,16 @@ def homepage_view(request):
 
 
 @login_required
-
-@login_required
-@login_required
 def add_order_view(request):
     if request.method == 'POST':
         form = AddOrderForm(request.POST)
         if form.is_valid():
-            product_id = form.cleaned_data['product_id']
-            quantity = form.cleaned_data['quantity']
-            try:
-                product = AddProduct.objects.get(id=product_id)
-                # Prepopulate the form with product ID and quantity
-                form = AddOrderForm(initial={'product_id': product_id, 'quantity': quantity})
-                return render(request, 'Addorder/add_order.html', {'form': form})
-            except AddProduct.DoesNotExist:
-                form.add_error('product_id', 'Product with this ID does not exist')
+            form.save()
+            return redirect('order_list')
     else:
-        form = AddOrderForm()
+        product_name = request.GET.get('product_name', None)
     return render(request, 'Addorder/add_order.html', {'form': form})
+
 @login_required
 def order_list(request):
     orders = AddOrder.objects.all()
