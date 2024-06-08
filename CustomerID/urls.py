@@ -15,9 +15,10 @@ router.register(r'customers', CustomerListAPIView, basename='customer')
 
 urlpatterns = [
     path('login/',login_view, name='login_view'), 
-    path('dashboard/', views.dashboard_view, name='dashboard'), 
+    path('dashboard/',views.dashboard_view, name='dashboard'), 
+    path('orders/',order_list, name='order_list'),
+    path('add/<int:product_id>/', add_order_view, name='add_order'),
     path('products1/', product_list, name='product_list'),
-    path('orders/', order_list, name='order_list'),
     path('logout/', logout_view, name='logout'),
     path('', views.customer_list, name='customer_list'),  
     path('create/', views.customer_create, name='customer_create'), 
@@ -26,9 +27,6 @@ urlpatterns = [
     path('api/', include(router.urls)), 
     path('accounts/', accounts_view, name='accounts'),
     path('home/',homepage_view, name='homepage'),
-    path('prod/',views.add_product, name='add_product'),
-    path('purchase/', views.purchase_product, name='purchase_product'),
-    path('add/', add_order_view, name='add_order'),
     
     
 

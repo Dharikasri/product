@@ -26,11 +26,13 @@
 
     .navbar ul li {
       display: inline;
-      margin-right: 40px;
+      margin-right: 20px;
       font-weight: bold;
+    }
+
+    .navbar ul li a {
       text-decoration: none;
       color: #fff;
-      cursor: pointer;
     }
 
     .container {
@@ -39,12 +41,10 @@
       padding: 0 20px;
     }
 
-    /* Example styling for product categories */
     .category-dropdown {
-      margin: 20px 0;
+      margin-bottom: 20px;
     }
 
-    /* Example styling for products */
     .products {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -56,6 +56,41 @@
       padding: 20px;
       text-align: center;
     }
+
+    .product h3 {
+      margin-top: 0;
+    }
+
+    .product p {
+      margin-bottom: 10px;
+    }
+
+    .product form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .product form label {
+      margin-bottom: 5px;
+    }
+
+    .product form select {
+      margin-bottom: 10px;
+    }
+
+    .product form button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .product form button:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
@@ -64,14 +99,12 @@
   </div>
   <div class="navbar">
     <ul>
-      <li><a href="{% url 'CustomerID:homepage'%}">Home</a></li>
+      <li><a href="{% url 'CustomerID:homepage' %}">Home</a></li>
       <li><a href="{% url 'order_list' %}">Orders</a></li>
       <li><a href="{% url 'CustomerID:accounts' %}">Account</a></li>
       <li><a href="{% url 'CustomerID:logout' %}">Logout</a></li>
     </ul>
   </div>
-
-  <!-- Categories -->
   <div class="container">
     <h2>Categories</h2>
     <div class="category-dropdown">
@@ -83,8 +116,6 @@
       </select>
     </div>
   </div>
-
-  <!-- Products -->
   <div class="container">
     <h2>Products</h2>
     <div class="products">
@@ -93,8 +124,8 @@
         <h3>{{ product.name }}</h3>
         <p>{{ product.description }}</p>
         <p>Price: ${{ product.price }}</p>
-        <!-- Form for adding order -->
-        <form method="post" action="{% url 'add_order' %}">
+        {% if product.id %}
+        <form method="post" action="{% url 'add_order'product.id %}"> 
           {% csrf_token %}
           <input type="hidden" name="product_id" value="{{ product.id }}">
           <label for="quantity{{ product.id }}">Quantity:</label>
@@ -107,6 +138,9 @@
           </select>
           <button type="submit">Buy</button>
         </form>
+        {% else %}
+        <p>Product ID is not available.</p>
+        {% endif %}
       </div>
       {% endfor %}
     </div>

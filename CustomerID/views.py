@@ -1,18 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
 from rest_framework import viewsets
 from .models import Customer
 from .forms import CustomerForm
 from .serializers import CustomerSerializer
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm
-from Addcategory.models import AddCategory 
+from Addcategory.models import AddCategory
 from Addproduct.models import AddProduct
 from Addorder.models import AddOrder
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-
+from django.contrib import messages
 
 # Views for managing customers
 def customer_list(request):
@@ -28,7 +26,7 @@ def customer_create(request):
         form = CustomerForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('customer_list')
+            return redirect(reverse('CustomerID:customer_list'))
     else:
         form = CustomerForm()
     return render(request, 'CustomerID/customer_form.html', {'form': form})
@@ -57,8 +55,6 @@ class CustomerListAPIView(viewsets.ModelViewSet):
     serializer_class = CustomerSerializer
 
 # Views for user authentication
-from django.contrib import messages
-
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, request.POST)
@@ -76,39 +72,25 @@ def login_view(request):
     return render(request, 'Registration/login.html', {'form': form})
 
 
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 from django.urls import reverse
+from django.contrib import messages
+from Addcategory.models import AddCategory
+from Addproduct.models import AddProduct
+from Addorder.models import AddOrder
+from Addorder.forms import AddOrderForm
 
 @login_required
 def dashboard_view(request):
     categories = AddCategory.objects.all()
     products = AddProduct.objects.all()
-
-    if request.method == 'POST':
-        product_id = request.POST.get('product_id')
-        quantity = request.POST.get('quantity')
-
-        if product_id is None:
-            messages.error(request, 'Please select a product.')
-            return redirect('/dashboard/')
-        
-        # Retrieve product details based on the product ID
-        product = AddProduct.objects.get(pk=product_id)
-
-        # Redirect to the add_order page with product details
-        return HttpResponseRedirect(reverse('/add/') + f'?product_id={product_id}&quantity={quantity}')
-
-    else:
-        return render(request, 'Registration/dashboard.html', {'categories': categories, 'products': products})
-
-
-
+    return render(request, 'Registration/dashboard.html', {'categories': categories, 'products': products})
 
 def product_list(request):
     return render(request, 'Addproduct/product_list.html')
 
-def order_list(request):
-    return render(request, 'Addorder/order_list.html')
 
 def logout_view(request):
     logout(request)
@@ -122,22 +104,27 @@ def homepage_view(request):
     return render(request, 'Registration/Homepage.html')
 
 
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+@login_required
 
-def add_product(request):
-    return render(request, 'Addproduct/add_product.html')
-
-def purchase_product(request):
+@login_required
+@login_required
+def add_order_view(request):
     if request.method == 'POST':
-        product_id = request.POST.get('product_id')
-        quantity = request.POST.get('quantity')
-        print(f'Product ID: {product_id}, Quantity: {quantity}')
-        return HttpResponse('Purchase successful!')
+        form = AddOrderForm(request.POST)
+        if form.is_valid():
+            product_id = form.cleaned_data['product_id']
+            quantity = form.cleaned_data['quantity']
+            try:
+                product = AddProduct.objects.get(id=product_id)
+                # Prepopulate the form with product ID and quantity
+                form = AddOrderForm(initial={'product_id': product_id, 'quantity': quantity})
+                return render(request, 'Addorder/add_order.html', {'form': form})
+            except AddProduct.DoesNotExist:
+                form.add_error('product_id', 'Product with this ID does not exist')
     else:
-        return HttpResponse('Method not allowed')
-
-def add_order(request):
-    product_id = request.GET.get('product_id')
-    quantity = request.GET.get('quantity')
-    return render(request, 'Addorder/add_order.html', {'product_id': product_id, 'quantity': quantity})
+        form = AddOrderForm()
+    return render(request, 'Addorder/add_order.html', {'form': form})
+@login_required
+def order_list(request):
+    orders = AddOrder.objects.all()
+    return render(request, 'Addorder/order_list.html', {'orders': orders})

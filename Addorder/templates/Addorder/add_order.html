@@ -70,9 +70,12 @@
     </style>
 </head>
 <body>
-    <form method="post">
+    <form method="post" action="{% url 'add_order'%}">
+
+
         <h1>Add Order</h1>
         {% csrf_token %}
+        <input type="hidden" name="order_date" value="{{ order_date }}" readonly>
         {{ form.as_p }}
         <button type="submit">Save</button>
     </form>

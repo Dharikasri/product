@@ -15,17 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from CustomerID.views import login_view   
+from CustomerID.views import login_view ,dashboard_view  
 urlpatterns = [
     path('', login_view, name='root'),
+    path('dashboard/',dashboard_view, name='dashboard'),
     path('admin/', admin.site.urls),
-    path('', include('Addorder.urls')),
+    path('order/', include('Addorder.urls')),
     path('Cate/', include('Addcategory.urls')),
-    path('addproduct/', include('Addproduct.urls')), 
-    path('', include('Addproduct.urls')),  
-    path('', include('CustomerID.urls')),
+    path('addproduct/', include('Addproduct.urls')),  
     path('CustomerID/', include('CustomerID.urls', namespace='CustomerID_app')),
-     path('api1/', include('Addcategory.urls')),
+    path('api1/', include('Addcategory.urls')),
 ]
 
 

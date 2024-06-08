@@ -11,5 +11,6 @@ router.register(r'add_order', AddOrderViewSet)
 urlpatterns = [
     path('api2/', include(router.urls)),
     path('orders/', order_list, name='order_list'),
-    path('add/', add_order_view, name='add_order'),
+    path('add/<int:product_id>/', add_order_view, name='add_order'),
+
 ]

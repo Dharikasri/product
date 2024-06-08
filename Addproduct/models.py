@@ -2,7 +2,9 @@ from django.db import models
 from Addcategory.models import AddCategory
 from decimal import Decimal
 
+
 class AddProduct(models.Model):
+    product_id = models.IntegerField(unique=True,default=True)
     name = models.CharField(max_length=100)
     category = models.ForeignKey(AddCategory, on_delete=models.CASCADE, null=True)
     description = models.TextField()
